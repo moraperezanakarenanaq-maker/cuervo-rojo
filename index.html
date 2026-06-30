@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuervo Rojo | Catálogo Místico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-principal: #0a0a0a;
+            --bg-tarjetas: #141414;
+            --rojo-carmesi: #900c3f;
+            --rojo-brillante: #c70039;
+            --texto-claro: #e5e5e5;
+            --texto-oscuro: #888888;
+            --borde-sutil: #262626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 1)), 
+                        url('imagenes/cuervo.png') no-repeat center center/cover;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--rojo-carmesi);
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            color: var(--texto-claro);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 0px 0px 15px rgba(200, 0, 57, 0.6);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            color: var(--texto-oscuro);
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .seccion-nfc {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--bg-tarjetas);
+            border-radius: 8px;
+            border: 1px solid var(--borde-sutil);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .seccion-nfc h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--rojo-brillante);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .explicacion-nfc {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .paso-nfc {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+        }
+
+        .paso-nfc span {
+            font-size: 2.5rem;
+            color: var(--rojo-carmesi);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .catalogo-container {
+            max-width: 1200px;
+            margin: 0 auto 80px auto;
+            padding: 0 20px;
+        }
+
+        .titulo-seccion {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+        }
+
+        /* --- ESTILOS DEL NUEVO SUBMENÚ DESPLEGABLE --- */
+        details {
+            background-color: var(--bg-tarjetas);
+            border: 1px solid var(--borde-sutil);
+            border-radius: 6px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        details[open] {
+            border-color: var(--rojo-carmesi);
+        }
+
+        summary {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            padding: 20px;
+            cursor: pointer;
+            color: var(--texto-claro);
+            letter-spacing: 2px;
+            list-style: none; /* Quita la flecha por defecto */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        /* Flecha gótica personalizada */
+        summary::after {
+            content: '┼';
+            color: var(--rojo-brillante);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            transform: rotate(45deg);
+            color: var(--texto-claro);
+        }
+
+        .contenido-desplegable {
+            padding: 25px;
+            border-top: 1px solid var(--borde-sutil);
+            background-color: #0d0d0d;
+        }
+
+        /* Grid de Productos Interno */
+        .grid-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .tarjeta-producto {
+            background-color: var(--bg-tarjetas);
+            border: 1px solid var(--borde-sutil);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tarjeta-producto:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(144, 12, 63, 0.2);
+        }
+
+        .foto-placeholder {
+            width: 100%;
+            height: 280px;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--texto-oscuro);
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--borde-sutil);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-producto {
+            padding: 20px;
+        }
+
+        .info-producto h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .info-producto p {
+            color: var(--texto-oscuro);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .precio {
+            color: var(--texto-claro);
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* --- NUEVO BOTÓN AGREGAR AL CARRITO --- */
+        .btn-adquirir {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--rojo-carmesi);
+            color: var(--texto-claro);
+            border: 1px solid transparent;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-adquirir:hover {
+            background-color: var(--rojo-brillante);
+            box-shadow: 0 0 10px var(--rojo-brillante);
+        }
+
+        footer {
+            background-color: #050505;
+            border-top: 1px solid var(--borde-sutil);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--texto-oscuro);
+            font-size: 0.9rem;
+        }
+
+        .info-entregas {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            border: 1px dashed var(--rojo-carmesi);
+            padding: 15px;
+            border-radius: 4px;
+            color: var(--texto-claro);
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+        /* --- ESTILOS DEL CARRUSEL AUTOMÁTICO --- */
+.carrusel {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid var(--borde-sutil);
+}
+
+.carrusel-slides {
+    display: flex;
+    width: 300%; /* Cambia según el número de fotos (300% para 3 fotos) */
+    height: 100%;
+    animation: cambiarFotos 12s infinite ease-in-out;
+}
+
+.carrusel-slides img {
+    width: 33.33%; /* Cada foto ocupa un tercio del espacio total */
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Animación para que las fotos se deslicen solas */
+@keyframes cambiarFotos {
+    0%, 25% { transform: translateX(0); }          /* Muestra Foto 1 */
+    33%, 58% { transform: translateX(-33.33%); }  /* Desplaza a Foto 2 */
+    66%, 91% { transform: translateX(-66.66%); }  /* Desplaza a Foto 3 */
+    100% { transform: translateX(0); }            /* Regresa suave al inicio */
+}
+    </style>
+    
+</head>
+<body>
+
+    <header>
+        <h1>CUERVO ROJO</h1>
+        <p>“Un espacio donde la elegancia de las sombras se encuentra con la innovación. ¿Lista para ser la protagonista de tu propia historia?”</p>
+    </header>
+
+    <section class="seccion-nfc">
+        <h2>Innovación Digital: NFC Custom CDs</h2>
+        <p>No es solo nostalgia, es un portal a tus sonidos favoritos. Nuestros CDs fusionan la estética gótica con tecnología interactiva.</p>
+        <div class="explicacion-nfc">
+            <div class="paso-nfc">
+                <span>💿</span>
+                <h4>Elige tu Arte</h4>
+                <p>Diseños exclusivos inspirados en las sombras.</p>
+            </div>
+            <div class="paso-nfc">
+                <span>📱</span>
+                <h4>Vincula tu Link</h4>
+                <p>Programamos el chip interno con tu playlist o video especial.</p>
+            </div>
+            <div class="paso-nfc">
+                <span>✨</span>
+                <h4>Acerca y Disfruta</h4>
+                <p>Acerca tu smartphone al CD para invocar la música al instante.</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="catalogo-container">
+        <h2 class="titulo-seccion">Catálogo Oficial</h2>
+        
+        <!-- CATEGORÍA 1: TECNOLOGÍA -->
+        <details open>
+            <summary>Música & Tecnología</summary>
+           <div class="tarjeta-producto">
+    <!-- Aquí empieza el carrusel con tus 3 fotos -->
+    <div class="carrusel">
+        <div class="carrusel-slides">
+            <img src="imagenes/cd.png" alt="Custom CD NFC - Vista Principal">
+            <img src="imagenes/cd's2.png" alt="Custom CD NFC - Detalle">
+            <img src="imagenes/cd's3.png" alt="Custom CD NFC - Empaque">
+        </div>
+    </div>
+    
+    <div class="info-producto">
+        <h3>Custom CD NFC</h3>
+        <p>Tu música favorita con estética alternativa y tecnología integrada.</p>
+        <span class="precio">$90</span>
+        <a href="#" class="btn-quirir">Agregar al carrito</a>
+    </div>
+</div>
+
+        <!-- CATEGORÍA 2: ARETES (SUBMENÚ DESPLEGABLE) -->
+        <details>
+            <summary>Aretes Disponibles</summary>
+            <div class="contenido-desplegable">
+                <div class="grid-productos">
+                    
+                    <div class="tarjeta-producto">
+                        <img src="imagenes/2.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Aretes de Camafeo</h3>
+                            <p>Estilo vintage con detalles en rojo carmesí.</p>
+                            <span class="precio">$60</span>
+                            <a href="#" class="btn-adquirir">Agregar al carrito</a>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-producto">
+                        <img src="imagenes/1.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Aretes de Cruz</h3>
+                            <p>Diseño alternativo en contraste plateado y rojo.</p>
+                            <span class="precio">$65</span>
+                            <a href="#" class="btn-adquirir">Agregar al carrito</a>
+                        </div>
+                    </div>
+                    
+                    <div class="tarjeta-producto">
+                        <img src="imagenes/4.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Aretes de Cruz</h3>
+                            <p>Diseño alternativo en contraste negro y rojo.</p>
+                            <span class="precio">$60</span>
+                            <a href="#" class="btn-adquirir">Agregar al carrito</a>
+                        </div>
+                    </div>
+                    
+                    <div class="tarjeta-producto">
+                        <img src="imagenes/5.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Aretes de gota</h3>
+                            <p>Diseño alternativo en contraste negro y rojo.</p>
+                            <span class="precio">$50</span>
+                            <a href="#" class="btn-adquirir">Agregar al carrito</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </details>
+
+        <!-- CATEGORÍA 3: ACCESORIOS Y MAQUILLAJE -->
+        <details>
+            <summary>Accesorios de complemento & Belleza</summary>
+            <div class="contenido-desplegable">
+                <div class="grid-productos">
+                    
+                    
+                     <!-- espejo -->
+                    <div class="tarjeta-producto">
+                        <img src="imagenes/7.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Espejo de Bolsillo</h3>
+                            <p>Espejo doble con grabado detallado de cuervo.</p>
+                            <span class="precio">$120</span>
+                            <a href="#" class="btn-adquirir">Agregar al carrito</a>
+                        </div>
+                    </div>
+
+                    
+                    <!-- paleta de sombras -->
+                    <div class="tarjeta-producto">
+                       <img src="imagenes/8.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Paleta de Sombras</h3>
+                            <p>Tonos profundos para miradas místicas.</p>
+                            <span class="precio">$180</span>
+                            <a href="#" class="btn-adquirir">Agregar al carrito</a>
+                        </div>
+                    </div>
+
+                     <!-- abanico -->
+                    <div class="tarjeta-producto">
+                        <img src="imagenes/6.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Abanico de Rosas</h3>
+                            <p>Detalles oscuros con temática gótica victoriana.</p>
+                            <span class="precio">$70</span>
+                            <a href="#" class="btn-adquirir">Agregar al carrito</a>
+                        </div>
+                    </div>
+
+                     <!-- guantes de encaje -->
+                    <div class="tarjeta-producto">
+                        <img src="imagenes/9.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Guantes de Encaje</h3>
+                            <p>El complemento perfecto y sofisticado para tu outfit.</p>
+                            <span class="precio">$70</span>
+                            <a href="#" class="btn-adquirir">Agregar al carrito</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </details>
+
+    </main>
+
+    <footer>
+        <div class="info-entregas">
+            <h4>📍 Puntos de Entrega Personales (Puebla Capital)</h4>
+            <p><strong>Sábados:</strong> Paseo Bravo (2:00 a 3:00 PM)</p>
+            <p><strong>Entre semana:</strong> C.U. y Zona Sur (Hora a acordar)</p>
+        </div>
+        <p>&copy; 2026 Cuervo Rojo. Hecho con código e innovación mística.</p>
+    </footer>
+
+</body>
+</html>
