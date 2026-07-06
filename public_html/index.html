@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuervo Rojo | Catálogo Místico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-principal: #0a0a0a;
+            --bg-tarjetas: #141414;
+            --rojo-carmesi: #900c3f;
+            --rojo-brillante: #c70039;
+            --texto-claro: #e5e5e5;
+            --texto-oscuro: #888888;
+            --borde-sutil: #262626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.6)), 
+                        url('imagenes/cuervo1.png') no-repeat center center/cover;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--rojo-carmesi);
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            color: var(--texto-claro);
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 0px 0px 15px rgba(200, 0, 57, 0.6);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            color: var(--texto-oscuro);
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .seccion-nfc {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--bg-tarjetas);
+            border-radius: 8px;
+            border: 1px solid var(--borde-sutil);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .seccion-nfc h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--rojo-brillante);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .explicacion-nfc {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .paso-nfc {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+        }
+
+        .paso-nfc span {
+            font-size: 2.5rem;
+            color: var(--rojo-carmesi);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .catalogo-container {
+            max-width: 1200px;
+            margin: 0 auto 80px auto;
+            padding: 0 20px;
+        }
+
+        .titulo-seccion {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+        }
+
+        /* --- ESTILOS DEL NUEVO SUBMENÚ DESPLEGABLE --- */
+        details {
+            background-color: var(--bg-tarjetas);
+            border: 1px solid var(--borde-sutil);
+            border-radius: 6px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        details[open] {
+            border-color: var(--rojo-carmesi);
+        }
+
+        summary {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            padding: 20px;
+            cursor: pointer;
+            color: var(--texto-claro);
+            letter-spacing: 2px;
+            list-style: none; /* Quita la flecha por defecto */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        /* Flecha gótica personalizada */
+        summary::after {
+            content: '┼';
+            color: var(--rojo-brillante);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            transform: rotate(45deg);
+            color: var(--texto-claro);
+        }
+
+        .contenido-desplegable {
+            padding: 25px;
+            border-top: 1px solid var(--borde-sutil);
+            background-color: #0d0d0d;
+        }
+
+        /* Grid de Productos Interno */
+        .grid-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .tarjeta-producto {
+            background-color: var(--bg-tarjetas);
+            border: 1px solid var(--borde-sutil);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tarjeta-producto:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(144, 12, 63, 0.2);
+        }
+
+        .foto-placeholder {
+            width: 100%;
+            height: 280px;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--texto-oscuro);
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--borde-sutil);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-producto {
+            padding: 20px;
+        }
+
+        .info-producto h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .info-producto p {
+            color: var(--texto-oscuro);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .precio {
+            color: var(--texto-claro);
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* --- NUEVO BOTÓN AGREGAR AL CARRITO --- */
+        .btn-adquirir {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--rojo-carmesi);
+            color: var(--texto-claro);
+            border: 1px solid transparent;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-adquirir:hover {
+            background-color: var(--rojo-brillante);
+            box-shadow: 0 0 10px var(--rojo-brillante);
+        }
+
+        footer {
+            background-color: #050505;
+            border-top: 1px solid var(--borde-sutil);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--texto-oscuro);
+            font-size: 0.9rem;
+        }
+
+        .info-entregas {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            border: 1px dashed var(--rojo-carmesi);
+            padding: 15px;
+            border-radius: 4px;
+            color: var(--texto-claro);
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+        /* --- ESTILOS DEL CARRUSEL AUTOMÁTICO --- */
+.carrusel {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid var(--borde-sutil);
+}
+
+.carrusel-slides {
+    display: flex;
+    width: 300%; /* Cambia según el número de fotos (300% para 3 fotos) */
+    height: 100%;
+    animation: cambiarFotos 12s infinite ease-in-out;
+}
+
+.carrusel-slides img {
+    width: 33.33%; /* Cada foto ocupa un tercio del espacio total */
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Animación para que las fotos se deslicen solas */
+@keyframes cambiarFotos {
+    0%, 25% { transform: translateX(0); }          /* Muestra Foto 1 */
+    33%, 58% { transform: translateX(-33.33%); }  /* Desplaza a Foto 2 */
+    66%, 91% { transform: translateX(-66.66%); }  /* Desplaza a Foto 3 */
+    100% { transform: translateX(0); }            /* Regresa suave al inicio */
+}
+.btn-carrito-flotante {
+            position: fixed !important;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--rojo-carmesi);
+            color: var(--texto-claro);
+            border: 1px solid var(--borde-sutil);
+            padding: 15px 22px;
+            border-radius: 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            z-index: 9999; /* Asegura que flote por encima de las tarjetas y el footer */
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.7);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-carrito-flotante:hover {
+            background-color: var(--rojo-brillante);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--rojo-brillante);
+        }
+
+        /* Ventana de fondo del carrito (oculta por defecto) */
+        .modal-carrito {
+            display: none; 
+            position: fixed;
+            z-index: 10000; /* Por encima del botón flotante */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 5, 5, 0.85); /* Fondo oscuro translúcido */
+            backdrop-filter: blur(4px);
+        }
+
+        /* Contenedor central del carrito */
+        .contenido-carrito {
+            background-color: var(--bg-tarjetas);
+            border: 1px solid var(--rojo-carmesi);
+            margin: 10% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            position: relative;
+            color: var(--texto-claro);
+        }
+
+        .contenido-carrito h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--texto-claro);
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--borde-sutil);
+            padding-bottom: 10px;
+        }
+
+        /* Botón de cerrar (X) */
+        .cerrar-modal {
+            color: var(--texto-oscuro);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .cerrar-modal:hover {
+            color: var(--rojo-brillante);
+        }
+
+        /* Filas de productos dentro del carrito */
+        .item-carrito {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--borde-sutil);
+        }
+
+        .carrito-vacio {
+            color: var(--texto-oscuro);
+            text-align: center;
+            padding: 20px 0;
+            font-style: italic;
+        }
+
+        /* Sección del Total */
+        .total-carrito {
+            margin: 20px 0;
+            text-align: right;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Botón proceder al pago */
+        .btn-pagar {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: transparent;
+            color: var(--texto-claro);
+            border: 1px solid var(--rojo-carmesi);
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-pagar:hover {
+            background-color: var(--rojo-carmesi);
+            box-shadow: 0 0 10px var(--rojo-carmesi);
+        }
+        .contenedor-imagen {
+    position: relative;
+}
+
+/* Letrero de Agotado (oculto al inicio) */
+.etiqueta-agotado {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(199, 0, 57, 0.9); /* Rojo carmesí traslúcido */
+    color: #fff;
+    padding: 10px 20px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    letter-spacing: 2px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+/* Clase que aplicaremos con JavaScript cuando el stock llegue a 0 */
+.producto-agotado .foto-producto {
+    filter: grayscale(100%) brightness(40%); /* Foto en blanco y negro y obscura */
+}
+
+.producto-agotado .etiqueta-agotado {
+    display: block; /* Muestra el letrero */
+}
+
+.producto-agotado .btn-agregar {
+    background-color: #333 !important;
+    border-color: #444 !important;
+    color: #666 !important;
+    cursor: not-allowed; /* Cambia el cursor a prohibido */
+    pointer-events: none; /* Desactiva los clics */
+}
+    </style>
+    
+    
+</head>
+<body>
+
+    <header>
+        <h1>CUERVO ROJO</h1>
+        <p>“Un espacio donde la elegancia de las sombras se encuentra con la innovación. ¿Listx para ser la protagonista de tu propia historia?”</p>
+    </header>
+
+    <section class="seccion-nfc">
+        <div class="seccion-innovacion" style="background-color: #0d0d0d; border: 1px solid #2d1b24; border-radius: 8px; padding: 50px 40px; margin-bottom: 40px; font-family: 'Montserrat', sans-serif; width: 200%; max-width: 100%; box-sizing: border-box;">
+    
+    <h2 style="color: var(--rojo-brillante); text-align: center; font-family: 'Garamond', serif; font-size: 2rem; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase;">
+        Innovación Digital: NFC Custom CDs
+    </h2>
+    
+    <p style="color: #b3b3b3; text-align: center; max-width: 900px; margin: 0 auto 30px auto; font-size: 0.95rem; line-height: 1.6;">
+        No es solo nostalgia, es un portal a tus sonidos favoritos. Nuestros CDs fusionan la estética gótica con tecnología interactiva.
+    </p>
+
+   <div class="contenedor-exhibicion-nfc" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: center;">
+        
+        <!-- 📸 EL CARRUSEL (Ahora más ancho, expandido hasta tu línea verde) -->
+        <div class="tarjeta-carrusel-informativo" style="flex: 0 0 55%; min-width: 220px; max-width: 800px; border-radius: 7px; overflow: hidden; border: 1px solid #2d1b24;">
+            <div class="carrusel">
+                <div class="carrusel-slides">
+                    <img src="imagenes/cd'ss_1.png" alt="Custom CD NFC - Vista Principal" style="width: 100%; height: 280px; object-fit: cover; display: block;">
+                    <img src="imagenes/cd's2.png" alt="Custom CD NFC - Detalle" style="width: 100%; height: 320px; object-fit: cover; display: block;">
+                    <img src="imagenes/cd's3.png" alt="Custom CD NFC - Empaque" style="width: 100%; height: 320px; object-fit: cover; display: block;">
+                </div>
+            </div>
+        </div>
+
+        <!-- 📋 LOS TRES PASOS EXPLICATIVOS (Tomando el resto del espacio de forma estilizada) -->
+        <div class="pasos-explicacion" style="flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 25px; padding-left: 10px;">
+            
+            <!-- Paso 1 -->
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <span style="font-size: 2rem;">💿</span>
+                <div style="text-align: left;">
+                    <h4 style="color: #fff; margin-bottom: 4px; font-size: 1.1rem; font-weight: 600;">Elige tu Arte</h4>
+                    <p style="color: #8c8c8c; font-size: 0.9rem; margin: 0;">Diseños exclusivos inspirados en las sombras.</p>
+                </div>
+            </div>
+
+            <!-- Paso 2 -->
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <span style="font-size: 2rem;">📱</span>
+                <div style="text-align: left;">
+                    <h4 style="color: #fff; margin-bottom: 4px; font-size: 1.1rem; font-weight: 600;">Vincula tu Link</h4>
+                    <p style="color: #8c8c8c; font-size: 0.9rem; margin: 0;">Programamos el chip interno con tu playlist o video especial.</p>
+                </div>
+            </div>
+
+            <!-- Paso 3 -->
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <span style="font-size: 2rem;">✨</span>
+                <div style="text-align: left;">
+                    <h4 style="color: #fff; margin-bottom: 4px; font-size: 1.1rem; font-weight: 600;">Acerca y Disfruta</h4>
+                    <p style="color: #8c8c8c; font-size: 0.9rem; margin: 0;">Acerca tu smartphone al CD para invocar la música al instante.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    </section>
+
+    <main class="catalogo-container">
+        <h2 class="titulo-seccion">Catálogo Oficial</h2>
+        
+       
+              <details> 
+                   <summary>CD's disponibles</summary>
+            <div class="contenido-desplegable">
+                <div class="grid-productos" style="gap: 70px;">
+             <!-- cd modelo 1-->
+            <div class="tarjeta-producto" data-id="cd(1)">
+                <img src="imagenes/cd(1).png" alt="CD Disponible" style="width: 100%; height: 280px; object-fit: cover;">
+                <div class="info-producto" style="padding: 20px 15px; display: flex; flex-direction: column; gap: 12px;">
+                    <h3>CD Modelo 1</h3>
+                    <p>Gorillaz.</p>
+                    <span class="precio">$90</span>
+                    <a href="#" class="btn-adquirir" data-id="cd(1)" data-nombre="CD Modelo 2" data-precio="90">Agregar al carrito</a>
+                </div>
+            </div>
+            <!-- cd modelo 2-->
+            <div class="tarjeta-producto" data-id="cd(2)">
+                <img src="imagenes/cd(2).png" alt="CD Disponible" style="width: 100%; height: 280px; object-fit: cover;">
+                <div class="info-producto">
+                    <h3>CD Modelo 2</h3>
+                    <p>Avenged sevenfold.</p>
+                    <span class="precio">$90</span>
+                    <a href="#" class="btn-adquirir" data-id="cd(2)" data-nombre="CD Modelo 2" data-precio="90">Agregar al carrito</a>
+                </div>
+            </div>
+
+             <!-- cd modelo 3-->
+            <div class="tarjeta-producto" data-id="cd(3)">
+                <img src="imagenes/cd(3).png" alt="CD Disponible" style="width: 100%; height: 280px; object-fit: cover;">
+                <div class="info-producto">
+                    <h3>CD Modelo 3</h3>
+                    <p>Korn.</p>
+                    <span class="precio">$90</span>
+                    <a href="#" class="btn-adquirir" data-id="cd(3)" data-nombre="CD Modelo 3" data-precio="90">Agregar al carrito</a>
+                </div>
+            </div>
+
+              <!-- cd modelo 4-->
+            <div class="tarjeta-producto" data-id="cd(4)">
+                <img src="imagenes/cd(4).png" alt="CD Disponible" style="width: 100%; height: 280px; object-fit: cover;">
+                <div class="info-producto">
+                    <h3>CD Modelo 4</h3>
+                    <p>Caifanes.</p>
+                    <span class="precio">$90</span>
+                    <a href="#" class="btn-adquirir" data-id="cd(4)" data-nombre="CD Modelo 4" data-precio="90">Agregar al carrito</a>
+                </div>
+            </div>
+
+               <!-- cd modelo 5-->
+            <div class="tarjeta-producto" data-id="cd(5)">
+                <img src="imagenes/cd(5).png" alt="CD Disponible" style="width: 100%; height: 280px; object-fit: cover;">
+                <div class="info-producto">
+                    <h3>CD Modelo 5</h3>
+                    <p>Evanescence.</p>
+                    <span class="precio">$90</span>
+                    <a href="#" class="btn-adquirir" data-id="cd(5)" data-nombre="CD Modelo 5" data-precio="90">Agregar al carrito</a>
+                </div>
+            </div>
+
+                <!-- cd modelo 6-->
+            <div class="tarjeta-producto" data-id="cd(6)">
+                <img src="imagenes/cd(6).png" alt="CD Disponible" style="width: 100%; height: 280px; object-fit: cover;">
+                <div class="info-producto">
+                    <h3>CD Modelo 6</h3>
+                    <p>Bauhaus.</p>
+                    <span class="precio">$90</span>
+                    <a href="#" class="btn-adquirir" data-id="cd(6)" data-nombre="CD Modelo 6" data-precio="90">Agregar al carrito</a>
+                </div>
+            </div>
+</details>
+       
+
+        <!-- CATEGORÍA 2: ARETES (SUBMENÚ DESPLEGABLE) -->
+        <details>
+            <summary>Aretes Disponibles</summary>
+            <div class="contenido-desplegable">
+               <div class="grid-productos" style="gap: 40px;">
+                    
+                    <div class="tarjeta-producto" data-id="2">
+                        <img src="imagenes/2.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Aretes de Camafeo</h3>
+                            <p>Estilo vintage con detalles en rojo carmesí.</p>
+                            <span class="precio">$60</span>
+                           <a href="#" class="btn-adquirir" data-id="2" data-nombre="Aretes de camafeo" data-precio="60">Agregar al carrito</a>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-producto" data-id="1">
+                        <img src="imagenes/1.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Aretes de Cruz</h3>
+                            <p>Diseño alternativo en contraste plateado y rojo.</p>
+                            <span class="precio">$65</span>
+                           <a href="#" class="btn-adquirir" data-id="1" data-nombre="Aretes de cruz plateados" data-precio="65">Agregar al carrito</a>
+                        </div>
+                    </div>
+                    
+                    <div class="tarjeta-producto" data-id="4">
+                        <img src="imagenes/4.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Aretes de Cruz</h3>
+                            <p>Diseño alternativo en contraste negro y rojo.</p>
+                            <span class="precio">$60</span>
+                            <a href="#" class="btn-adquirir" data-id="4" data-nombre="Aretes de cruz negros" data-precio="60">Agregar al carrito</a>
+                        </div>
+                    </div>
+                    
+                    <div class="tarjeta-producto" data-id="5">
+                        <img src="imagenes/5.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Aretes de gota</h3>
+                            <p>Diseño alternativo en contraste negro y rojo.</p>
+                            <span class="precio">$50</span>
+                            <a href="#" class="btn-adquirir" data-id="5" data-nombre="Aretes de gota" data-precio="50">Agregar al carrito</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </details>
+
+        <!-- CATEGORÍA 3: ACCESORIOS Y MAQUILLAJE -->
+       <details>
+    <summary>Accesorios de complemento & Belleza</summary>
+    <div class="contenido-desplegable">
+        
+        <div class="grid-productos">
+
+            <!-- paleta de sombras -->
+            <div class="tarjeta-producto" data-id="8">
+                <img src="imagenes/8.png" alt="Paleta de Sombras" style="width: 100%; height: 280px; object-fit: cover;">
+                <div class="info-producto">
+                    <h3>Paleta de Sombras</h3>
+                    <p>Tonos profundos para miradas místicas.</p>
+                    <span class="precio">$180</span>
+                    <a href="#" class="btn-adquirir" data-id="8" data-nombre="Paleta de Sombras" data-precio="180">Agregar al carrito</a>
+                </div>
+            </div>
+
+            <!-- abanico -->
+            <div class="tarjeta-producto" data-id="6">
+                <img src="imagenes/6.png" alt="Abanico" style="width: 100%; height: 280px; object-fit: cover;">
+                <div class="info-producto">
+                    <h3>Abanico</h3>
+                    <p>Descripción elegante o gótica de tu abanico.</p>
+                    <span class="precio">$90</span>
+                    <a href="#" class="btn-adquirir" data-id="6" data-nombre="Abanico" data-precio="90">Agregar al carrito</a>
+                </div>
+            </div>
+
+                     <!-- guantes de encaje -->
+                    <div class="tarjeta-producto" data-id="9">
+                        <img src="imagenes/9.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Guantes de Encaje</h3>
+                            <p>El complemento perfecto y sofisticado para tu outfit.</p>
+                            <span class="precio">$70</span>
+                            <a href="#" class="btn-adquirir" data-id="9" data-nombre="Guantes de Encaje" data-precio="70">Agregar al carrito</a>
+                        </div>
+                    </div>
+                     
+                      <!-- collar de cruz -->
+                    <div class="tarjeta-producto" data-id="10">
+                        <img src="imagenes/10.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>choquer de cruz</h3>
+                            <p>choquer de cruz grande (7 cm).</p>
+                            <span class="precio">$60</span>
+                            <a href="#" class="btn-adquirir" data-id="10" data-nombre="choquer de cruz" data-precio="60">Agregar al carrito</a>
+                        </div>
+                    </div>
+                      
+                       <!-- uñas press on -->
+                    <div class="tarjeta-producto" data-id="11">
+                        <img src="imagenes/11.png" alt="Mini CD Keychain" style="width: 100%; height: 280px; object-fit: cover; border-bottom: 1px solid var(--borde-sutil);">
+                        <div class="info-producto">
+                            <h3>Uñas press on</h3>
+                            <p> Uñas press on (tienen su pegantina para colocarlas).</p>
+                            <span class="precio">$60</span>
+                            <a href="#" class="btn-adquirir" data-id="11" data-nombre="uñas press on" data-precio="60">Agregar al carrito</a>
+                        </div>
+                    </div>
+                      
+                </div>
+            </div>
+                
+        </details>
+
+    </main>
+
+    <footer>
+        <div class="info-entregas">
+            <h4>📍 Puntos de Entrega Personales (Puebla Capital)</h4>
+            <p><strong>Sábados:</strong> Paseo Bravo (2:00 a 3:00 PM)</p>
+            <p><strong>Entre semana:</strong> C.U. y Zona Sur (Hora a acordar)</p>
+        </div>
+        <p>&copy; 2026 Cuervo Rojo. Hecho con código e innovación mística.</p>
+    </footer>
+
+    <!-- Botón para abrir el carrito (puedes ponerlo en tu navbar o flotante) -->
+<button id="btn-ver-carrito" class="btn-carrito-flotante">
+    🛒 Ver Carrito
+</button>
+
+<!-- Ventana modal del carrito (inicialmente oculta) -->
+<div id="modal-carrito" class="modal-carrito">
+        <div class="contenido-carrito">
+            <span class="cerrar-modal">&times;</span>
+            <h2>Tu Carrito Místico</h2>
+            
+            <div id="lista-carrito-contenedor">
+                <p class="carrito-vacio">Tu carrito está vacío actualmente.</p>
+            </div>
+            
+            <div class="total-carrito">
+                <h3>Total: $<span id="precio-total">0</span></h3>
+            </div>
+            
+            <button id="btn-pagar" class="btn-pagar">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyC7bWELp1V2HgOkd_Z3BWBB4A1T7stBFg0",
+        authDomain: "cuervorojo-10687.firebaseapp.com",
+        databaseURL: "https://cuervorojo-10687-default-rtdb.firebaseio.com",
+        projectId: "cuervorojo-10687",
+        storageBucket: "cuervorojo-10687.firebasestorage.app"
+      };
+      
+      // Se inicializa globalmente para que carritoo.js pueda heredarla
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script src="carritoo.js"></script>
+</body>
+</html>
