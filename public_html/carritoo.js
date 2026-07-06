@@ -1,7 +1,8 @@
 // Línea 1 corregida:
-const database = firebase.database();
+const database = firebase.database(); 
 // 1. Inicializar el carrito desde la memoria del navegador
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
 
 // 2. Seleccionar todos tus botones de agregar con su clase exacta
 const botonesAdquirir = document.querySelectorAll('.btn-adquirir');
